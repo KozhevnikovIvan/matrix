@@ -106,15 +106,17 @@ int main(int argc, char *argv[]) {
   int n = 0;
   Menu(Matrix, m, n);
   Main(Matrix, m, n, argc, argv);
-  int choice;
-  cin >> choice;
-  switch (choice) {
-    case 1:
-      print_matrix(Matrix, m, n);
-      break;
-    case 8:
-      return 0;
+  while (true) {
+    int choice;
+    cin >> choice;
+    switch (choice) {
+      case 1:
+        print_matrix(Matrix, m, n);
+        Menu(Matrix, m, n);
+        break;
+      case 8:
+        return 0;
+    }
   }
-  Menu(Matrix, m, n);
   deleting_Matrix(Matrix, m, n);
 }
