@@ -14,13 +14,6 @@ void print_matrix(int **Matrix, int m, int n) {
   }
 }
 
-void deleting_Matrix(int **Matrix, int &m, int &n) {
-  if (Matrix == nullptr) {
-    for (int i = 0; i < m; i++) delete[] Matrix[i];
-    delete[] Matrix;
-  }
-}
-
 void Menu(int **&Matrix, int &m, int &n) {
   cout << "Выберите одну из операций:" << endl;
   cout << "1. Вывести матрицу" << endl;
@@ -120,5 +113,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
   }
-  deleting_Matrix(Matrix, m, n);
+  if (Matrix == nullptr) {
+    for (int i = 0; i < m; i++) delete[] Matrix[i];
+    delete[] Matrix;
+  }
 }
