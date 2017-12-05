@@ -111,7 +111,9 @@ int main(int argc, char *argv[]) {
     cin >> choice;
     switch (choice) {
       case 1:
+        cout << endl;
         print_matrix(Matrix, m, n);
+        cout << endl;
         Menu(Matrix, m, n);
         break;
       case 8:
