@@ -8,8 +8,9 @@ void print_matrix(int **Matrix, int m, int n) {
     cout << "Matrix is empty" << endl;
   else {
     for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) cout << Matrix[i][j] << " ";
-      cout << endl;
+      for (int j = 0; j < n; j++) 
+        cout << Matrix[i][j] << " ";
+        cout << endl;
     }
   }
 }
