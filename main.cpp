@@ -3,19 +3,19 @@
 
 using namespace std;
 
-void print_matrix(int **Matrix, int m, int n) {
+void print_matrix(int **Matrix, int x, int y) {
   if (Matrix == nullptr)
-    cout << "Matrix is empty" << endl;
+    cout << "Матрица пуста" << endl;
   else {
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) 
-        cout << Matrix[i][j] << " ";
-        cout << endl;
+    for (int i = 0; i < x; i++) {
+      for (int j = 0; j < y; j++) 
+      cout << Matrix[i][j] << " ";
+      cout << endl;
     }
   }
 }
 
-void Menu(int **&Matrix, int &m, int &n) {
+void Menu(int **&Matrix, int &x, int &y) {
   cout << "Выберите одну из операций:" << endl;
   cout << "1. Вывести матрицу" << endl;
   cout << "2. Сложить матрицу" << endl;
@@ -28,30 +28,30 @@ void Menu(int **&Matrix, int &m, int &n) {
   cout << endl;
 }
 
-void Main(int **&Matrix, int &m, int &n, int argc, char *argv[]) {
-  string m_str, n_str;
+void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
+  string str_x, str_y;
   int integer1;
   int k = 0;
   if (argc == 1) {
-    m = n = 0;
+    x = y = 0;
     Matrix = nullptr;
   } else {
     while (argv[1][k] != 'x') {
-      m_str = m_str + argv[1][k];
+      str_x = str_x + argv[1][k];
       k++;
     }
     k++;
     while (k != strlen(argv[1])) {
-      n_str = n_str + argv[1][k];
+      str_y = str_y + argv[1][k];
       k++;
     }
     k = 0;
-    m = atoi(m_str.c_str());
-    n = atoi(n_str.c_str());
-    Matrix = new int *[m];
-    for (int i = 0; i < m; i++) Matrix[i] = new int[n];
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) Matrix[i][j] = 0;
+    x = atoi(str_x.c_str());
+    y = atoi(str_y.c_str());
+    Matrix = new int *[x];
+    for (int i = 0; i < x; i++) Matrix[i] = new int[y];
+    for (int i = 0; i < x; i++) {
+      for (int j = 0; j < y; j++) Matrix[i][j] = 0;
     }
     if (argc == 2) {
     } else {
@@ -59,8 +59,8 @@ void Main(int **&Matrix, int &m, int &n, int argc, char *argv[]) {
         string matrix_array;
         matrix_array = argv[2];
         string integer_str;
-        for (int i = 0; i < m; i++) {
-          for (int j = 0; j < n; j++) {
+        for (int i = 0; i < x; i++) {
+          for (int j = 0; j < y; j++) {
             if (k < matrix_array.length()) {
               for (int z = k; z < matrix_array.length(); z++) {
                 if (matrix_array[z] == ',') {
@@ -80,8 +80,8 @@ void Main(int **&Matrix, int &m, int &n, int argc, char *argv[]) {
         }
       } else {
         int z = 2;
-        for (int i = 0; i < m; i++) {
-          for (int j = 0; j < n; j++) {
+        for (int i = 0; i < x; i++) {
+          for (int j = 0; j < y; j++) {
             if (z < argc) {
               integer1 = atoi(argv[z]);
               Matrix[i][j] = integer1;
@@ -96,26 +96,26 @@ void Main(int **&Matrix, int &m, int &n, int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
   int **Matrix = nullptr;
-  int m = 0;
-  int n = 0;
-  Menu(Matrix, m, n);
-  Main(Matrix, m, n, argc, argv);
+  int x = 0;
+  int y = 0;
+  Menu(Matrix, x, y);
+  Main(Matrix, x, y, argc, argv);
   while (true) {
     int choice;
     cin >> choice;
     switch (choice) {
       case 1:
         cout << endl;
-        print_matrix(Matrix, m, n);
+        print_matrix(Matrix, x, y);
         cout << endl;
-        Menu(Matrix, m, n);
+        Menu(Matrix, x, y);
         break;
       case 8:
         return 0;
     }
   }
   if (Matrix == nullptr) {
-    for (int i = 0; i < m; i++) delete[] Matrix[i];
+    for (int i = 0; i < x; i++) delete[] Matrix[i];
     delete[] Matrix;
   }
 }
