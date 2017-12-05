@@ -105,7 +105,7 @@ void Main (int **Matrix, int &m, int &n, int argc, char *argv []) {
 
 int main(int argc,char *argv[]) {
     int **Matrix, m, n;
-    Main (argc, argv);
+    Main (Matrix, m, n, argc, argv);
     int choice;
         cin>>choice;
 		    switch(choice) {
