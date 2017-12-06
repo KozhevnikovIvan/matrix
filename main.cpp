@@ -8,7 +8,8 @@ void print_matrix(int **Matrix, int x, int y) {
     cout << "Матрица пуста" << endl;
   else {
     for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cout << Matrix[i][j] << " ";
+      for (int j = 0; j < y; j++) 
+      cout << Matrix[i][j] << " ";
       cout << endl;
     }
   }
@@ -29,7 +30,7 @@ void Menu(int **&Matrix, int &x, int &y) {
 
 void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
   string str_x, str_y;
-  int integer1;
+  int str_int;
   int k = 0;
   if (argc == 1) {
     x = y = 0;
@@ -52,23 +53,20 @@ void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) Matrix[i][j] = 0;
     }
-    if (argc == 2) {
-    } else {
-      if (argc == 3) {
-      } else {
+    if (argc == 2) { } 
+    else {
         int z = 2;
         for (int i = 0; i < x; i++) {
           for (int j = 0; j < y; j++) {
             if (z < argc) {
-              integer1 = atoi(argv[z]);
-              Matrix[i][j] = integer1;
+              str_int = atoi(argv[z]);
+              Matrix[i][j] = str_int;
               z++;
             }
           }
         }
-      }
     }
-  }
+    }
 }
 
 int main(int argc, char *argv[]) {
