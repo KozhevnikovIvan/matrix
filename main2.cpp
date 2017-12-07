@@ -93,7 +93,7 @@ void summ_matrix(int **&Matrix, int &x, int &y) {
   }
 }
 
-void multiplication_matrix(int **&Matrix, int &x, int &y, int argc,
+void multiplication_matrix(int **&Matrix, int x, int y, int argc,
                            char *argv[]) {
   if (Matrix == nullptr) {
     cout << "Матрица пуста" << endl;
