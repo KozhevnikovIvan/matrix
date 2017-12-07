@@ -77,7 +77,7 @@ void summ_matrix(int **&Matrix, int &x, int &y) {
         summ_matrix[i]= new int [y];
         for (int i=0; i<x; i++) {
             for (int j=0; j<y; j++)
-                cin >> summ_matrix[j];
+                cin >> summ_matrix[i][j];
         }
         cout<<endl;
         for (int i=0; i<x; i++) {
