@@ -137,11 +137,11 @@ void multiplication_matrix (int **&Matrix, int x, int y) {
           cout<<endl;
       }    
       for(int i=0; i<x; i++)
-        delete multiplication_matrix_2[i];
-      delete multiplication_matrix_2;
+        delete[] multiplication_matrix_2[i];
+      delete[] multiplication_matrix_2;
       for(int i=0; i<a; i++)
-        delete multi_matrix[i];
-      delete multi_matrix;
+        delete[] multi_matrix[i];
+      delete[] multi_matrix;
     }  
   }
 }
