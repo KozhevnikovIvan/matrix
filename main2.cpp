@@ -8,7 +8,8 @@ void print_matrix(int **Matrix, int x, int y) {
     cout << "Матрица пуста" << endl;
   else {
     for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cout << Matrix[i][j] << " ";
+      for (int j = 0; j < y; j++) 
+      cout << Matrix[i][j] << " ";
       cout << endl;
     }
   }
@@ -29,7 +30,6 @@ void Menu(int **&Matrix, int &x, int &y) {
 
 void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
   string str_x, str_y;
-  int str_int;
   int k = 0;
   if (argc == 1) {
     x = y = 0;
@@ -52,105 +52,97 @@ void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) Matrix[i][j] = 0;
     }
-    if (argc == 2) {
-    } else {
-      int z = 2;
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          if (z < argc) {
-            str_int = atoi(argv[z]);
-            Matrix[i][j] = str_int;
-            z++;
+    if (argc == 2) { } 
+    else {
+        int z = 2;
+        int str_el;
+        for (int i = 0; i < x; i++) {
+          for (int j = 0; j < y; j++) {
+            if (z < argc) {
+              str_el = atoi(argv[z]);
+              Matrix[i][j] = str_el;
+              z++;
+            }
           }
         }
-      }
     }
-  }
+    }
 }
 
 void summ_matrix(int **&Matrix, int &x, int &y) {
   if (Matrix == nullptr)
     cout << "Матрица пуста" << endl;
   else {
-    int **summ_matrix;
-    summ_matrix = new int *[x];
-    for (int i = 0; i < x; i++) summ_matrix[i] = new int[y];
-    cout << "Введите матрицу размера " << x << "x" << y << ":" << endl;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cin >> summ_matrix[i][j];
-    }
-    cout << endl;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++)
-        Matrix[i][j] = Matrix[i][j] + summ_matrix[i][j];
-    }
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cout << Matrix[i][j] << " ";
-      cout << endl;
-    }
-    for (int i = 0; i < x; i++) delete[] summ_matrix[i];
-    delete[] summ_matrix;
+        int **summ_matrix;
+        summ_matrix = new int *[x];
+        for (int i=0; i<x; i++) 
+        summ_matrix[i]= new int [y];
+        cout << "Введите матрицу размера "<< x<<"x"<<y<<":"<<endl;
+        for (int i=0; i<x; i++) {
+            for (int j=0; j<y; j++)
+                cin >> summ_matrix[i][j];
+        }
+        cout<<endl;
+        for (int i=0; i<x; i++) {
+            for (int j=0; j<y; j++) 
+            Matrix[i][j]= Matrix[i][j]+ summ_matrix[i][j];
+        }
+        for (int i = 0; i < x; i++) 
+         delete[] summ_matrix[i];
+        delete[] summ_matrix;
   }
 }
 
-void multiplication_matrix(int **&Matrix, int x, int y, int argc,
-                           char *argv[]) {
+void multiplication_matrix (int **&Matrix, int x, int y) {
   if (Matrix == nullptr) {
     cout << "Матрица пуста" << endl;
-  } else {
+  }
+  else {
     int a, b;
-    string amount;
-    cout << "Введите размер второй матрицы: ";
-    cin >> amount;
-    int g = 0;
-    string amount_a, amount_b;
-    while (argv[1][g] != 'x') {
-      amount_a = amount_a + argv[1][g];
-      g++;
+    cout<<"Введите количество строк: ";
+    cin>>a;
+    cout<<"Введите количество столбцов: ";
+    cin>>b;
+    if(a != y) {
+      cout<<"Количество столбцов этой матрицы должно быть равно количеству строк первой матрицы\nОшибка!"<<endl;
     }
-    g++;
-    while (g != strlen(argv[1])) {
-      amount_b = amount_b + argv[1][g];
-      g++;
-    }
-    a = atoi(amount_a.c_str());
-    b = atoi(amount_b.c_str());
-    if (a != y) {
-      cout << "Количество столбцов этой матрицы должно быть равно количеству "
-              "строк первой матрицы\nОшибка!"
-           << endl;
-    } else {
+    else {
       int **multi_matrix;
-      multi_matrix = new int *[a];
-      for (int i = 0; i < a; i++) multi_matrix[i] = new int[b];
-      cout << "\nВведите элементы второй матрицы:" << endl;
-      for (int j = 0; j < a; j++) {
-        for (int q = 0; q < b; q++) cin >> multi_matrix[j][q];
-      }
-      cout << endl;
-      int **multiplication_matrix_2;
-      multiplication_matrix_2 = new int *[x];
-      for (int i = 0; i < a; i++) multiplication_matrix_2[i] = new int[b];
-      for (int i = 0; i < x; i++) {
-        for (int q = 0; q < b; q++) multiplication_matrix_2[i][q] = 0;
-      }
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < b; j++) {
-          for (int q = 0; q < a; q++)
-            multiplication_matrix_2[i][q] = Matrix[i][j] * multi_matrix[j][q] +
-                                            multiplication_matrix_2[i][q];
-        }
-      }
-      for (int i = 0; i < x; i++) {
-        for (int q = 0; q < b; q++)
-          cout << multiplication_matrix_2[i][q] << " ";
-        cout << endl;
-      }
-      for (int i = 0; i < x; i++) delete multiplication_matrix_2[i];
-      delete multiplication_matrix_2;
-      for (int i = 0; i < a; i++) delete multi_matrix[i];
-      delete multi_matrix;
+    multi_matrix = new int *[a];
+    for(int i=0; i<a; i++)
+      multi_matrix[i] = new int [b];
+    cout<<"\nВведите элементы второй матрицы:"<<endl;  
+    for (int j=0; j<a; j++) {
+      for (int q=0; q<b; q++) 
+        cin >> multi_matrix[j][q];
     }
+    cout<<endl;
+    int **multiplication_matrix_2;
+    multiplication_matrix_2 = new int *[x];
+    for(int i=0; i<a; i++)
+      multiplication_matrix_2[i] = new int [b];
+      for (int i=0; i<x; i++) {
+        for (int q=0; q<b; q++)
+        multiplication_matrix_2[i][q]=0;
+      }
+      for (int i=0; i<x; i++) {
+        for (int j=0; j<y; j++) {
+          for (int q=0; q<b; q++) 
+            multiplication_matrix_2[i][q] = Matrix[i][j] * multi_matrix[j][q] + multiplication_matrix_2[i][q];
+        }
+      }  
+      for (int i = 0; i < x; i++) {
+        for (int q = 0; q < b; q++) 
+          cout<<multiplication_matrix_2[i][q]<<" ";
+          cout<<endl;
+      }    
+      for(int i=0; i<x; i++)
+        delete multiplication_matrix_2[i];
+      delete multiplication_matrix_2;
+      for(int i=0; i<a; i++)
+        delete multi_matrix[i];
+      delete multi_matrix;
+    }  
   }
 }
 
@@ -175,11 +167,14 @@ int main(int argc, char *argv[]) {
         cout << endl;
         summ_matrix(Matrix, x, y);
         cout << endl;
+        print_matrix(Matrix, x, y);
+        cout <<endl;
         Menu(Matrix, x, y);
         break;
       case 3:
-        cout << endl;
-        multiplication_matrix(Matrix, x, y, argc, argv);
+        cout<<endl;
+        Main(Matrix, x, y, argc, argv);
+        multiplication_matrix(Matrix, x, y);
         cout << endl;
         Menu(Matrix, x, y);
         break;
@@ -188,7 +183,8 @@ int main(int argc, char *argv[]) {
     }
   }
   if (Matrix == nullptr) {
-    for (int i = 0; i < x; i++) delete[] Matrix[i];
-    delete[] Matrix;
+    for (int i = 0; i < x; i++) 
+    delete[] Matrix[i];
+  delete[] Matrix;
   }
 }
