@@ -137,6 +137,34 @@ void multiplication_matrix(int **&Matrix, int x, int y) {
   }
 }
 
+void transpose_matrix ( int **&Matrix, int &x, int &y) {
+    if (Matrix==nullptr) cout<< "Matrix is empty"<< endl;
+    else {
+        int **Matrix_tr;
+        Matrix_tr= new int *[x];
+        for (int i=0; i<x; i++) Matrix_tr[i]= new int [y];
+        for (int i=0; i<x; i++) {
+            for (int j=0; j<y; j++)
+                Matrix_tr[i][j] = Matrix [i][j];
+        }
+        int x_tr=x;
+        int y_tr=y;
+        for (int i = 0; i < x; i++) 
+          delete[] Matrix[i];
+        delete[] Matrix;
+        swap (x,y);
+        Matrix= new int *[x];
+        for (int i=0; i<x; i++) Matrix[i]= new int [y];
+        for (int i=0; i<x; i++) {
+            for (int j=0; j<y; j++)
+                Matrix[i][j]= Matrix_tr [j][i];
+        }
+        for(int i=0; i<x; i++)
+          delete[] Matrix_tr[i];
+        delete[] Matrix_tr;
+    }
+}
+
 int main(int argc, char *argv[]) {
   int **Matrix = nullptr;
   int x = 0;
@@ -171,6 +199,15 @@ int main(int argc, char *argv[]) {
         cout << endl;
         Menu(Matrix, x, y);
         break;
+      case 4:
+        cout << endl;
+        Main(Matrix, x, y, argc, argv);
+        transpose_matrix(Matrix, x, y);
+        cout << endl;
+        print_matrix(Matrix, x, y);
+        cout << endl;
+        Menu(Matrix, x, y);
+        break;        
       case 8:
         return 0;
     }
