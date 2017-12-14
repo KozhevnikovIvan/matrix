@@ -163,38 +163,56 @@ void transpose_matrix(int **&Matrix, int &x, int &y) {
   }
 }
 
-void matrix_v_file(int **&Matrix, int &x, int &y) {
-  string name_file, rewrite;
-  cout << "Введите название файла: ";
-  cin >> name_file;
-  ifstream file(name_file, ios::in);
-  if (file != nullptr) {
-    cout << endl << "Перезаписать файл? (yes/ no)" << endl;
-    cin >> rewrite;
-    cout << endl;
-    file.close();
-    if (rewrite == "yes") {
-      ofstream file2(name_file, ios::out);
+void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
+  Main(Matrix, x, y, argc, argv);
+  if (Matrix==nullptr) cout<< "Матрица пуста";
+  else {
+    string name_file, rewrite;
+    cout << "Введите название файла: ";
+    cin >> name_file;
+    ifstream file(name_file, ios::in);
+    if (file != nullptr) {
+      cout << endl << "Перезаписать файл? (yes/ no)" << endl;
+      cin >> rewrite;
+      cout << endl;
+      file.close();
+      if (rewrite == "yes") {
+        ofstream file2(name_file, ios::out);
+        for (int i = 0; i < x; i++) {
+          for (int j = 0; j < y; j++) file2 << Matrix[i][j] << " ";
+          file2 << endl;
+        }
+        cout << "Матрица записанна в файл " << name_file << endl;
+        file2.close();
+      } else if (rewrite == "no") {
+        file.close();
+      }
+    } else {
+      file.close();
+      ofstream file3(name_file, ios::out);
       for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) file2 << Matrix[i][j] << " ";
-        file2 << endl;
+        for (int j = 0; j < y; j++) file3 << Matrix[i][j] << " ";
+        file3 << endl;
       }
       cout << "Матрица записанна в файл " << name_file << endl;
-      file2.close();
-    } else if (rewrite == "no") {
-      file.close();
+      file3.close();
     }
-  } else {
-    file.close();
-    ofstream file3(name_file, ios::out);
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) file3 << Matrix[i][j] << " ";
-      file3 << endl;
-    }
-    cout << "Матрица записанна в файл " << name_file << endl;
-    file3.close();
   }
 }
+
+void matrix_iz_file(int **&Matrix, int &x, int &y) {
+    char matrix;
+    string name_file;
+    cout << "Введите название файла: ";
+    cin >> name_file;   
+    cout<<endl;
+    ifstream file(name_file, ios::in);
+    if (file==nullptr) cout<< "Матрица пуста"<<endl;
+    else {
+      while (file.get(matrix))
+        cout<<matrix;
+  }
+}  
 
 int main(int argc, char *argv[]) {
   int **Matrix = nullptr;
@@ -239,7 +257,13 @@ int main(int argc, char *argv[]) {
         break;
       case 5:
         cout << endl;
-        matrix_v_file(Matrix, x, y);
+        matrix_v_file(Matrix, x, y, argc, argv);
+        cout << endl;
+        Menu(Matrix, x, y);
+        break;
+      case 6:
+        cout << endl;
+        matrix_iz_file(Matrix, x, y);
         cout << endl;
         Menu(Matrix, x, y);
         break;
