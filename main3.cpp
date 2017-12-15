@@ -185,7 +185,6 @@ void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
         cout << "Матрица записанна в файл " << name_file << endl;
         file2.close();
       } else if (rewrite == "no") {
-        file.close();
       }
     } else {
       file.close();
