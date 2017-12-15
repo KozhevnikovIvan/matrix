@@ -140,7 +140,7 @@ void multiplication_matrix(int **&Matrix, int x, int y) {
 
 void transpose_matrix(int **&Matrix, int &x, int &y) {
   if (Matrix == nullptr)
-    cout << "Matrix is empty" << endl;
+    cout << "Матрица пуста" << endl;
   else {
     int **Matrix_tr;
     Matrix_tr = new int *[x];
