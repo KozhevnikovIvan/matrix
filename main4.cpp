@@ -1,4 +1,4 @@
-#include <iostream>
+##include <iostream>
 #include <string.h>
 #include <fstream>
 
@@ -165,7 +165,8 @@ void transpose_matrix(int **&Matrix, int &x, int &y) {
 
 void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
   Main(Matrix, x, y, argc, argv);
-  if (Matrix==nullptr) cout<< "Матрица пуста";
+  if (Matrix == nullptr)
+    cout << "Матрица пуста";
   else {
     string name_file, rewrite;
     cout << "Введите название файла: ";
@@ -200,88 +201,82 @@ void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
 }
 
 void matrix_iz_file(int **&Matrix, int &x, int &y) {
-    char matrix;
-    string name_file;
-    cout << "Введите название файла: ";
-    cin >> name_file;   
-    cout<<endl;
-    ifstream file(name_file, ios::in);
-    if (file==nullptr) cout<< "Матрица пуста"<<endl;
-    else {
-      while (file.get(matrix))
-        cout<<matrix;
-  }
-}  
-
-void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
-  Main(Matrix, x, y, argc, argv);
-  if (Matrix==nullptr) cout<< "Матрица пуста";
+  char matrix;
+  string name_file;
+  cout << "Введите название файла: ";
+  cin >> name_file;
+  cout << endl;
+  ifstream file(name_file, ios::in);
+  if (file == nullptr)
+    cout << "Матрица пуста" << endl;
   else {
-    string method;
-    cout<<endl<<"Выберите порядок сортировки:\nЗмея(s);\nУлитка(e);\nМуравей(a);"<<endl;
-      cin>>method;
-      if (method=="s") {
-        int z=x*y;
-        int k=0;
-        int *matrix_string = new int [z];
-        for(int i=0; i<x; i++){
-          for(int j=0; j<y; j++){
-          matrix_string[k]=Matrix[i][j];
-          k++;
-          }
-        }
-        k=0;
-        for (int k=0; k<z; k++) {
-          if (matrix_string[k]> matrix_string[z-k-1])
-            swap (matrix_string[k], matrix_string[z-k-1]);
-        }
-          for(int j=0; j<y; j++){
-            if((j+1)%2==1){
-              for(int i=0; i<x; i++) {
-                Matrix[i][j]=matrix_string[k];
-                k++;
-              }            
-            }
-            else if((j+1)%2==0) {
-              for(int i=x-1; i>-1; i--) {
-                Matrix[i][j]=matrix_string[k];
-                k++;
-              }
-            }
-          }
-      print_matrix(Matrix, x, y);
-      delete[] matrix_string;  
-      }
-    if (method=="e"){
-
-    }
-    if(method=="a") {
-      int z=x*y;
-      int k=0;
-      int *matrix_string = new int [z];
-      for(int i=0; i<x; i++){
-        for(int j=0; j<y; j++){
-          matrix_string[k]=Matrix[i][j];
-          k++;
-        }
-      }
-      k=0;
-      for (int k=0; k<z; k++) {
-        if (matrix_string[k]> matrix_string[z-k-1])
-          swap (matrix_string[k], matrix_string[z-k-1]);
-      }
-      for(int i=0; i<x; i++){
-        for(int j=0; j<y; j++) {
-          Matrix[i][j]=matrix_string[k];
-          k++;
-        }
-      }
-      print_matrix(Matrix, x, y);    
-      delete[] matrix_string;  
-    }
+    while (file.get(matrix)) cout << matrix;
   }
 }
 
+void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
+  Main(Matrix, x, y, argc, argv);
+  if (Matrix == nullptr)
+    cout << "Матрица пуста";
+  else {
+    string method;
+    cout << endl
+         << "Выберите порядок сортировки:\nЗмея(s);\nУлитка(e);\nМуравей(a);"
+         << endl;
+    cin >> method;
+    if (method == "s") {
+      int z = x * y;
+      int k = 0;
+      int *matrix_string = new int[z];
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          matrix_string[k] = Matrix[i][j];
+          k++;
+        }
+      }
+      k = 0;
+      for (int j = 0; j < y; j++) {
+        if ((j + 1) % 2 == 1) {
+          for (int i = 0; i < x; i++) {
+            Matrix[i][j] = matrix_string[k];
+            k++;
+          }
+        } else if ((j + 1) % 2 == 0) {
+          for (int i = x - 1; i > -1; i--) {
+            Matrix[i][j] = matrix_string[k];
+            k++;
+          }
+        }
+      }
+      print_matrix(Matrix, x, y);
+      delete[] matrix_string;
+    }
+    if (method == "e") {
+    }
+    if (method == "a") {
+      int z = x * y;
+      int k = 0;
+      int *matrix_string = new int[z];
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          matrix_string[k] = Matrix[i][j];
+          k++;
+        }
+      }
+      k = 0;
+      for (int k = 0; k < z / 2; k++)
+        swap(matrix_string[k], matrix_string[z - k - 1]);
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          Matrix[i][j] = matrix_string[k];
+          k++;
+        }
+      }
+      print_matrix(Matrix, x, y);
+      delete[] matrix_string;
+    }
+  }
+}
 
 int main(int argc, char *argv[]) {
   int **Matrix = nullptr;
@@ -337,10 +332,11 @@ int main(int argc, char *argv[]) {
         Menu(Matrix, x, y);
         break;
       case 7:
-        cout<<endl;
+        cout << endl;
         sorting(Matrix, x, y, argc, argv);
         cout << endl;
-        Menu(Matrix, x, y);        
+        Menu(Matrix, x, y);
+        break;
       case 8:
         return 0;
     }
