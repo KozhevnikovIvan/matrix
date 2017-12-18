@@ -230,9 +230,11 @@ void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
           k++;
           }
         }
-        int i=0, j=0;
         k=0;
-        while(i == x, j == y) {
+        for (int k=0; k<z; k++) {
+          if (matrix_string[k]> matrix_string[z-k-1])
+            swap (matrix_string[k], matrix_string[z-k-1]);
+        }
           for(int j=0; j<y; j++){
             if((j+1)%2==1){
               for(int i=0; i<x; i++) {
@@ -241,18 +243,17 @@ void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
               }            
             }
             else if((j+1)%2==0) {
-              for(int i=x; i>0; i--) {
+              for(int i=x-1; i>-1; i--) {
                 Matrix[i][j]=matrix_string[k];
                 k++;
               }
             }
           }
-        }
       print_matrix(Matrix, x, y);
       delete[] matrix_string;  
       }
     if (method=="e"){
-      
+
     }
     if(method=="a") {
       int z=x*y;
