@@ -1,4 +1,4 @@
-##include <iostream>
+#include <iostream>
 #include <string.h>
 #include <fstream>
 
@@ -252,6 +252,48 @@ void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
       delete[] matrix_string;
     }
     if (method == "e") {
+      int z = x * y;
+      int k = 0;
+      int *matrix_string = new int[z];
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          matrix_string[k] = Matrix[i][j];
+          k++;
+        }
+      }
+      k = 0;
+      int kvadr = 0;
+      int str_int = 0;
+      if (x < y)
+        str_int = x;
+      else
+        str_int = y;
+      if ((str_int % 2) == 0) {
+        kvadr = str_int / 2;
+      } else
+        kvadr = (str_int / 2) + 1;
+      int curr_kvadr = 1;
+      while (curr_kvadr != (kvadr + 1)) {
+        for (int i = (curr_kvadr - 1); i < (y - curr_kvadr + 1); i++) {
+          Matrix[curr_kvadr - 1][i] = matrix_string[k];
+          k++;
+        }
+        for (int i = curr_kvadr; i < (x - curr_kvadr + 1); i++) {
+          Matrix[i][y - curr_kvadr] = matrix_string[k];
+          k++;
+        }
+        for (int i = (y - curr_kvadr - 1); i > (curr_kvadr - 2); i--) {
+          Matrix[x - curr_kvadr][i] = matrix_string[k];
+          k++;
+        }
+        for (int i = (x - curr_kvadr - 1); i > (curr_kvadr - 1); i--) {
+          Matrix[i][curr_kvadr - 1] = matrix_string[k];
+          k++;
+        }
+        curr_kvadr++;
+      }
+      print_matrix(Matrix, x, y);
+      delete[] matrix_string;
     }
     if (method == "a") {
       int z = x * y;
