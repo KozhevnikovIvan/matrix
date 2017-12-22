@@ -4,18 +4,24 @@
 
 using namespace std;
 
-void print_matrix(int **Matrix, int x, int y) {
-  if (Matrix == nullptr)
+struct Matrix {
+  int **matrix = nullptr;
+  int x;
+  int y;
+};
+
+void print_matrix(Matrix &matrix) {
+  if (matrix.matrix == nullptr)
     cout << "Матрица пуста" << endl;
   else {
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cout << Matrix[i][j] << " ";
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++) cout << matrix.matrix[i][j] << " ";
       cout << endl;
     }
   }
 }
 
-void Menu(int **&Matrix, int &x, int &y) {
+void Menu() {
   cout << "Выберите одну из операций:" << endl;
   cout << "1. Вывести матрицу" << endl;
   cout << "2. Сложить матрицу" << endl;
@@ -28,12 +34,12 @@ void Menu(int **&Matrix, int &x, int &y) {
   cout << endl;
 }
 
-void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
+void Main(Matrix &matrix, int argc, char *argv[]) {
   string str_x, str_y;
   int k = 0;
   if (argc == 1) {
-    x = y = 0;
-    Matrix = nullptr;
+    matrix.x = matrix.y = 0;
+    matrix.matrix = nullptr;
   } else {
     while (argv[1][k] != 'x') {
       str_x = str_x + argv[1][k];
@@ -45,22 +51,22 @@ void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
       k++;
     }
     k = 0;
-    x = atoi(str_x.c_str());
-    y = atoi(str_y.c_str());
-    Matrix = new int *[x];
-    for (int i = 0; i < x; i++) Matrix[i] = new int[y];
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) Matrix[i][j] = 0;
+    matrix.x = atoi(str_x.c_str());
+    matrix.y = atoi(str_y.c_str());
+    matrix.matrix = new int *[matrix.x];
+    for (int i = 0; i < matrix.x; i++) matrix.matrix[i] = new int[matrix.y];
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++) matrix.matrix[i][j] = 0;
     }
     if (argc == 2) {
     } else {
       int z = 2;
       int str_el;
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
           if (z < argc) {
             str_el = atoi(argv[z]);
-            Matrix[i][j] = str_el;
+            matrix.matrix[i][j] = str_el;
             z++;
           }
         }
@@ -69,29 +75,30 @@ void Main(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
   }
 }
 
-void summ_matrix(int **&Matrix, int &x, int &y) {
-  if (Matrix == nullptr)
+void summ_matrix(Matrix &matrix) {
+  if (matrix.matrix == nullptr)
     cout << "Матрица пуста" << endl;
   else {
     int **summ_matrix;
-    summ_matrix = new int *[x];
-    for (int i = 0; i < x; i++) summ_matrix[i] = new int[y];
-    cout << "Введите матрицу размера " << x << "x" << y << ":" << endl;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) cin >> summ_matrix[i][j];
+    summ_matrix = new int *[matrix.x];
+    for (int i = 0; i < matrix.x; i++) summ_matrix[i] = new int[matrix.y];
+    cout << "Введите матрицу размера " << matrix.x << "x" << matrix.y << ":"
+         << endl;
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++) cin >> summ_matrix[i][j];
     }
     cout << endl;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++)
-        Matrix[i][j] = Matrix[i][j] + summ_matrix[i][j];
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++)
+        matrix.matrix[i][j] = matrix.matrix[i][j] + summ_matrix[i][j];
     }
-    for (int i = 0; i < x; i++) delete[] summ_matrix[i];
+    for (int i = 0; i < matrix.x; i++) delete[] summ_matrix[i];
     delete[] summ_matrix;
   }
 }
 
-void multiplication_matrix(int **&Matrix, int x, int y) {
-  if (Matrix == nullptr) {
+void multiplication_matrix(Matrix &matrix) {
+  if (matrix.matrix == nullptr) {
     cout << "Матрица пуста" << endl;
   } else {
     int a, b;
@@ -99,7 +106,7 @@ void multiplication_matrix(int **&Matrix, int x, int y) {
     cin >> a;
     cout << "Введите количество столбцов: ";
     cin >> b;
-    if (a != y) {
+    if (a != matrix.y) {
       cout << "Количество столбцов этой матрицы должно быть равно количеству "
               "строк первой матрицы\nОшибка!"
            << endl;
@@ -113,24 +120,25 @@ void multiplication_matrix(int **&Matrix, int x, int y) {
       }
       cout << endl;
       int **multiplication_matrix_2;
-      multiplication_matrix_2 = new int *[x];
+      multiplication_matrix_2 = new int *[matrix.x];
       for (int i = 0; i < a; i++) multiplication_matrix_2[i] = new int[b];
-      for (int i = 0; i < x; i++) {
+      for (int i = 0; i < matrix.x; i++) {
         for (int q = 0; q < b; q++) multiplication_matrix_2[i][q] = 0;
       }
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
           for (int q = 0; q < b; q++)
-            multiplication_matrix_2[i][q] = Matrix[i][j] * multi_matrix[j][q] +
-                                            multiplication_matrix_2[i][q];
+            multiplication_matrix_2[i][q] =
+                matrix.matrix[i][j] * multi_matrix[j][q] +
+                multiplication_matrix_2[i][q];
         }
       }
-      for (int i = 0; i < x; i++) {
+      for (int i = 0; i < matrix.x; i++) {
         for (int q = 0; q < b; q++)
           cout << multiplication_matrix_2[i][q] << " ";
         cout << endl;
       }
-      for (int i = 0; i < x; i++) delete[] multiplication_matrix_2[i];
+      for (int i = 0; i < matrix.x; i++) delete[] multiplication_matrix_2[i];
       delete[] multiplication_matrix_2;
       for (int i = 0; i < a; i++) delete[] multi_matrix[i];
       delete[] multi_matrix;
@@ -138,34 +146,34 @@ void multiplication_matrix(int **&Matrix, int x, int y) {
   }
 }
 
-void transpose_matrix(int **&Matrix, int &x, int &y) {
-  if (Matrix == nullptr)
+void transpose_matrix(Matrix &matrix) {
+  if (matrix.matrix == nullptr)
     cout << "Матрица пуста" << endl;
   else {
     int **Matrix_tr;
-    Matrix_tr = new int *[x];
-    for (int i = 0; i < x; i++) Matrix_tr[i] = new int[y];
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) Matrix_tr[i][j] = Matrix[i][j];
+    Matrix_tr = new int *[matrix.x];
+    for (int i = 0; i < matrix.x; i++) Matrix_tr[i] = new int[matrix.y];
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++) Matrix_tr[i][j] = matrix.matrix[i][j];
     }
-    int x_tr = x;
-    int y_tr = y;
-    for (int i = 0; i < x; i++) delete[] Matrix[i];
-    delete[] Matrix;
-    swap(x, y);
-    Matrix = new int *[x];
-    for (int i = 0; i < x; i++) Matrix[i] = new int[y];
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < y; j++) Matrix[i][j] = Matrix_tr[j][i];
+    int x_tr = matrix.x;
+    int y_tr = matrix.y;
+    for (int i = 0; i < matrix.x; i++) delete[] matrix.matrix[i];
+    delete[] matrix.matrix;
+    swap(matrix.x, matrix.y);
+    matrix.matrix = new int *[matrix.x];
+    for (int i = 0; i < matrix.x; i++) matrix.matrix[i] = new int[matrix.y];
+    for (int i = 0; i < matrix.x; i++) {
+      for (int j = 0; j < matrix.y; j++) matrix.matrix[i][j] = Matrix_tr[j][i];
     }
-    for (int i = 0; i < x; i++) delete[] Matrix_tr[i];
+    for (int i = 0; i < matrix.x; i++) delete[] Matrix_tr[i];
     delete[] Matrix_tr;
   }
 }
 
-void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
-  Main(Matrix, x, y, argc, argv);
-  if (Matrix == nullptr)
+void matrix_v_file(Matrix &matrix, int argc, char *argv[]) {
+  Main(matrix, argc, argv);
+  if (matrix.matrix == nullptr)
     cout << "Матрица пуста";
   else {
     string name_file, rewrite;
@@ -179,8 +187,9 @@ void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
       file.close();
       if (rewrite == "yes") {
         ofstream file2(name_file, ios::out);
-        for (int i = 0; i < x; i++) {
-          for (int j = 0; j < y; j++) file2 << Matrix[i][j] << " ";
+        for (int i = 0; i < matrix.x; i++) {
+          for (int j = 0; j < matrix.y; j++)
+            file2 << matrix.matrix[i][j] << " ";
           file2 << endl;
         }
         cout << "Матрица записанна в файл " << name_file << endl;
@@ -190,8 +199,8 @@ void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
     } else {
       file.close();
       ofstream file3(name_file, ios::out);
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) file3 << Matrix[i][j] << " ";
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) file3 << matrix.matrix[i][j] << " ";
         file3 << endl;
       }
       cout << "Матрица записанна в файл " << name_file << endl;
@@ -200,8 +209,8 @@ void matrix_v_file(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
   }
 }
 
-void matrix_iz_file(int **&Matrix, int &x, int &y) {
-  char matrix;
+void matrix_iz_file(Matrix &matrix) {
+  char matrix_ch;
   string name_file;
   cout << "Введите название файла: ";
   cin >> name_file;
@@ -210,13 +219,13 @@ void matrix_iz_file(int **&Matrix, int &x, int &y) {
   if (file == nullptr)
     cout << "Матрица пуста" << endl;
   else {
-    while (file.get(matrix)) cout << matrix;
+    while (file.get(matrix_ch)) cout << matrix_ch;
   }
 }
 
-void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
-  Main(Matrix, x, y, argc, argv);
-  if (Matrix == nullptr)
+void sorting(Matrix &matrix, int argc, char *argv[]) {
+  Main(matrix, argc, argv);
+  if (matrix.matrix == nullptr)
     cout << "Матрица пуста";
   else {
     string method;
@@ -225,166 +234,166 @@ void sorting(int **&Matrix, int &x, int &y, int argc, char *argv[]) {
          << endl;
     cin >> method;
     if (method == "s") {
-      int z = x * y;
+      int z = matrix.x * matrix.y;
       int k = 0;
       int *matrix_string = new int[z];
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          matrix_string[k] = Matrix[i][j];
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
+          matrix_string[k] = matrix.matrix[i][j];
           k++;
         }
       }
       k = 0;
-      for (int j = 0; j < y; j++) {
+      for (int j = 0; j < matrix.y; j++) {
         if ((j + 1) % 2 == 1) {
-          for (int i = 0; i < x; i++) {
-            Matrix[i][j] = matrix_string[k];
+          for (int i = 0; i < matrix.x; i++) {
+            matrix.matrix[i][j] = matrix_string[k];
             k++;
           }
         } else if ((j + 1) % 2 == 0) {
-          for (int i = x - 1; i > -1; i--) {
-            Matrix[i][j] = matrix_string[k];
+          for (int i = matrix.x - 1; i > -1; i--) {
+            matrix.matrix[i][j] = matrix_string[k];
             k++;
           }
         }
       }
-      print_matrix(Matrix, x, y);
+      print_matrix(matrix);
       delete[] matrix_string;
     }
     if (method == "e") {
-      int z = x * y;
+      int z = matrix.x * matrix.y;
       int k = 0;
       int *matrix_string = new int[z];
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          matrix_string[k] = Matrix[i][j];
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
+          matrix_string[k] = matrix.matrix[i][j];
           k++;
         }
       }
       k = 0;
       int kvadr = 0;
       int str_int = 0;
-      if (x < y)
-        str_int = x;
+      if (matrix.x < matrix.y)
+        str_int = matrix.x;
       else
-        str_int = y;
+        str_int = matrix.y;
       if ((str_int % 2) == 0) {
         kvadr = str_int / 2;
       } else
         kvadr = (str_int / 2) + 1;
       int curr_kvadr = 1;
       while (curr_kvadr != (kvadr + 1)) {
-        for (int i = (curr_kvadr - 1); i < (y - curr_kvadr + 1); i++) {
-          Matrix[curr_kvadr - 1][i] = matrix_string[k];
+        for (int i = (curr_kvadr - 1); i < (matrix.y - curr_kvadr + 1); i++) {
+          matrix.matrix[curr_kvadr - 1][i] = matrix_string[k];
           k++;
         }
-        for (int i = curr_kvadr; i < (x - curr_kvadr + 1); i++) {
-          Matrix[i][y - curr_kvadr] = matrix_string[k];
+        for (int i = curr_kvadr; i < (matrix.x - curr_kvadr + 1); i++) {
+          matrix.matrix[i][matrix.y - curr_kvadr] = matrix_string[k];
           k++;
         }
-        for (int i = (y - curr_kvadr - 1); i > (curr_kvadr - 2); i--) {
-          Matrix[x - curr_kvadr][i] = matrix_string[k];
+        for (int i = (matrix.y - curr_kvadr - 1); i > (curr_kvadr - 2); i--) {
+          matrix.matrix[matrix.x - curr_kvadr][i] = matrix_string[k];
           k++;
         }
-        for (int i = (x - curr_kvadr - 1); i > (curr_kvadr - 1); i--) {
-          Matrix[i][curr_kvadr - 1] = matrix_string[k];
+        for (int i = (matrix.x - curr_kvadr - 1); i > (curr_kvadr - 1); i--) {
+          matrix.matrix[i][curr_kvadr - 1] = matrix_string[k];
           k++;
         }
         curr_kvadr++;
       }
-      print_matrix(Matrix, x, y);
+      print_matrix(matrix);
       delete[] matrix_string;
     }
     if (method == "a") {
-      int z = x * y;
+      int z = matrix.x * matrix.y;
       int k = 0;
       int *matrix_string = new int[z];
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          matrix_string[k] = Matrix[i][j];
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
+          matrix_string[k] = matrix.matrix[i][j];
           k++;
         }
       }
       k = 0;
       for (int k = 0; k < z / 2; k++)
         swap(matrix_string[k], matrix_string[z - k - 1]);
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          Matrix[i][j] = matrix_string[k];
+      for (int i = 0; i < matrix.x; i++) {
+        for (int j = 0; j < matrix.y; j++) {
+          matrix.matrix[i][j] = matrix_string[k];
           k++;
         }
       }
-      print_matrix(Matrix, x, y);
+      print_matrix(matrix);
       delete[] matrix_string;
     }
   }
 }
 
 int main(int argc, char *argv[]) {
-  int **Matrix = nullptr;
-  int x = 0;
-  int y = 0;
-  Menu(Matrix, x, y);
-  Main(Matrix, x, y, argc, argv);
+  Matrix matrix;
+  matrix.x = 0;
+  matrix.y = 0;
+  Menu();
+  Main(matrix, argc, argv);
   while (true) {
     int choice;
     cin >> choice;
     switch (choice) {
       case 1:
         cout << endl;
-        Main(Matrix, x, y, argc, argv);
-        print_matrix(Matrix, x, y);
+        Main(matrix, argc, argv);
+        print_matrix(matrix);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 2:
         cout << endl;
-        summ_matrix(Matrix, x, y);
+        summ_matrix(matrix);
         cout << endl;
-        print_matrix(Matrix, x, y);
+        print_matrix(matrix);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 3:
         cout << endl;
-        Main(Matrix, x, y, argc, argv);
-        multiplication_matrix(Matrix, x, y);
+        Main(matrix, argc, argv);
+        multiplication_matrix(matrix);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 4:
         cout << endl;
-        Main(Matrix, x, y, argc, argv);
-        transpose_matrix(Matrix, x, y);
+        Main(matrix, argc, argv);
+        transpose_matrix(matrix);
         cout << endl;
-        print_matrix(Matrix, x, y);
+        print_matrix(matrix);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 5:
         cout << endl;
-        matrix_v_file(Matrix, x, y, argc, argv);
+        matrix_v_file(matrix, argc, argv);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 6:
         cout << endl;
-        matrix_iz_file(Matrix, x, y);
+        matrix_iz_file(matrix);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 7:
         cout << endl;
-        sorting(Matrix, x, y, argc, argv);
+        sorting(matrix, argc, argv);
         cout << endl;
-        Menu(Matrix, x, y);
+        Menu();
         break;
       case 8:
         return 0;
     }
   }
-  if (Matrix == nullptr) {
-    for (int i = 0; i < x; i++) delete[] Matrix[i];
-    delete[] Matrix;
+  if (matrix.matrix == nullptr) {
+    for (int i = 0; i < matrix.x; i++) delete[] matrix.matrix[i];
+    delete[] matrix.matrix;
   }
 }
